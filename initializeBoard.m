@@ -1,15 +1,10 @@
-function initializeBoard()
+function [bitboard, sudoku] = initializeBoard(inSudoku)
 % Initialize
 sudoku = zeros (9,9);
-possible = ones(9, 9, 9, 'uint8' );
+possible = ones(9, 9, 10, 'uint8' );
 possum = zeros(9,9);
 iRange=[0 0];
 jRange=[0 0];
-
-
-% Enter the known elements of the sudoku array
-% sudoku used available at this link (http://www.websudoku.com/?level=2&set_id=5989254854)
-inSudoku = [4 0 0 0 0 0 7 0 9 0 0 9 0 0 5 0 0 3 0 8 0 1 9 7 0 0 0 0 0 0 0 3 0 0 0 6 1 0 0 4 0 9 0 0 2 5 0 0 0 6 0 0 0 0 0 0 0 2 7 3 0 6 0 9 0 0 6 0 0 8 0 0 2 0 7 0 0 0 0 0 4];
 
 % We know everything 9th entry is a new row, so floor(entry#/9)=row.  Also
 % the column position is roughly entry# mod 9 (the column case is special
@@ -58,12 +53,13 @@ for i=1:9
     end % End j loop
 end % End i loop
 
+% Sums the z columns 
 for i=1:9 
     for j=1:9;
         possum(i,j) = sum(possible(i,j,:));
     end % End j loop
 end % End i loop
-
-
+possible(:,:,10) = possum;
+bitboard = possible;
 end
 
